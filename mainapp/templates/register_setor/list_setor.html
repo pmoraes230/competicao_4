@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% include "partials/header/header.html" %}
+
+<main class="container">
+    {% if messages %}
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="messageModalLabel">Messagem</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-unstyle">
+                        {% for message in messages %}
+                        <li class="{{ message.tags }} color_laranja text-center">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn button_rosa color_cinza" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <h1 class="text-center color_laranja mb-3">Lista de setores</h1>
+    <div class="row">
+        {% for setor in setors %}
+        <div class="col-sm-3 mb-3 mb-sm-0">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title color_laranja">{{ setor.nome }}</h5>
+                    <p class="card-text color_laranja">Quantidade de ingresso: {{ setor.qtd_setor }}</p>
+                    <p class="card-text color_laranja">Evento ligado: {{ setor.evento.nome }}</p>
+                    <a href="{% url "update_setor" setor.id %}" class="btn button_rosa color_cinza">Atualizar setor</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="text-center mt-4">
+            <a href="{% url "register_setor" %}" class="btn button_rosa color_cinza">Cadastrar Setor</a>
+        </div>
+    </div>
+</main>
+{% endblock %}
+{% block footer %}
+{% include "partials/footer/footer.html" %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    {% if messages %}
+    document.addEventListener("DOMContentLoaded", function () {
+        let messageModal = new bootstrap.Modal(document.getElementById("messageModal"), {
+            keyboard: true
+        });
+        messageModal.show();
+    })
+    {% endif %}
+</script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand margin_left" href="{% url "home" %}"><img src="{% static 'icons/senac.svg' %}" alt="logo_senac" class="icon_senac"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end margin_menu" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link color_roxoHover" href="{% url "register_event" %}">Cadastro de eventos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link color_roxoHover" href="{% url "list_setor" %}">Setores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link color_roxoHover" href="{% url "list_user" %}">Usuários</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link color_roxoHover" href="{% url "list_client" %}">Clientes</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle color_roxoHover" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {% if user_name %}
+                            {{ user_name }}
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item color_roxoHover" href="#">Action</a></li>
+                        <li><a class="dropdown-item color_roxoHover" href="{% url "logout" %}">Sair</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

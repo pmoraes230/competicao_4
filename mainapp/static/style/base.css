@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Jockey+One&display=swap');
+
+:root {
+    --cinca: #F2F2F2;
+    --roxo: #1331a1;
+    --rosa: #f31366;
+    --laranja: #f44528;
+    --amarelo: #f8b62f;
+    --verde: #a2ca02;
+}
+
+body {
+    font-family: "Jockey One", sans-serif;
+    background-color: var(--cinca);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex-grow: 1;
+}
+
+.color_laranja {
+    color: var(--laranja);
+}
+
+.color_roxo {
+    color: var(--roxo);
+}
+
+.color_laranjaHover {
+    color: var(--laranja);
+}
+
+.color_laranjaHover:hover {
+    color: #8a2918;
+}
+
+.color_roxoHover {
+    color: var(--roxo);
+}
+
+.color_roxoHover:hover {
+    color: #0b1c5a;
+}
+
+.bg_rosa {
+    background-color: var(--rosa);
+}
+
+.button_verde {
+    background-color: var(--verde);
+}
+
+.button_verde:hover {
+    background-color: #738f01;
+    color: #e2e2e2;
+}
+
+.button_roxo {
+    background-color: var(--roxo);
+}
+
+.button_roxo:hover {
+    background-color: #0e257a;
+    color: #e2e2e2;
+}
+
+.color_cinza {
+    color: var(--cinca);
+}
+
+.button_rosa {
+    background-color: var(--rosa);
+}
+
+.button_rosa:hover {
+    background-color: #af0f49;
+    color: #e2e2e2;
+}
+
+.icon_img {
+    width: 20%;
+    height: auto;
+    margin-right: 8px;
+}
+
+.describle {
+    margin: 0 5rem;
+}
+
+.margin {
+    margin: 0 2rem;
+}
+
+.icon_senac {
+    width: 150px;
+    height: auto;
+}
+
+.margin_left {
+    margin: 0 5rem;
+}
+
+.margin_menu {
+    margin: 0 18rem 0 0;
+} 
+
+.container_form {
+    width: 50%;
+    margin: auto;
+}
+
+.img_event {
+    width: 369px;
+}
+
+.details_event {
+    display: flex;
+    flex-direction: column;
+}
+
+.container_info {
+    display: flex;
+    flex-direction: column;
+}
+
+.update_event {
+    width: 8rem;
+}
+
+.content_info {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10%;
+    justify-content: start;
+}
+
+.card_info {
+    display: flex;
+    align-items: center;
+}
+
+.footer {
+    padding: 12px 10px
+}

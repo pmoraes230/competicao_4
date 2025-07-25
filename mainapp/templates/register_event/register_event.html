@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% block header %}
+{% include "partials/header/header.html" %}
+{% endblock %}
+
+<main class="container">
+    {% if messages %}
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="messageModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-unstyle">
+                        {% for message in messages %}
+                        <li class="{{ message.tags }} color_laranja text-center">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <h1 class="text-center mt-3 color_laranja">Registro de eventos</h1>
+    <form method="post" class="container_form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="name" class="form-label color_laranja">Nome evento</label>
+            <input type="text" class="form-control color_laranja" id="name" name="name">
+        </div>
+        <div class="mb-3">
+            <label for="date" class="form-label color_laranja">Data do evento</label>
+            <input type="date" class="form-control color_laranja" id="date" name="date">
+        </div>
+        <div class="mb-3">
+            <label for="time" class="form-label color_laranja">horario do evento</label>
+            <input type="time" class="form-control color_laranja" id="time" name="time">
+        </div>
+        <div class="mb-3">
+            <label for="limit_peaple" class="form-label color_laranja">Capacidade de pessoas no evento</label>
+            <input type="number" class="form-control color_laranja" id="limit_peaple" name="limit_peaple">
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label color_laranja">Preço dos evento</label>
+            <input type="text" class="form-control color_laranja" id="price" name="price"
+                pattern="^\d+(,\d{2})?$|^\d{1,3}(\.\d{3})*,\d{2}$" title="Somente aceito numeros em formato decimal">
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label color_laranja">Imagem do evento</label>
+            <input type="file" class="form-control color_laranja" id="image" name="image">
+        </div>
+        <div class="mb-3">
+            <label for="describle" class="form-label color_laranja">Descrição</label>
+            <textarea class="form-control color_laranja" style="resize: none;" id="describle" rows="5"
+                name="describle"></textarea>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn button_rosa color_cinza">Prosseguir cadastro</button>
+        </div>
+    </form>
+</main>
+
+{% endblock %}
+{% block footer %}
+{% include "partials/footer/footer.html" %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    {% if messages %}
+    document.addEventListener("DOMContentLoaded", function () {
+        let messageModal = new bootstrap.Modal(document.getElementById("messageModal"), {
+            keyboard: true
+        });
+        messageModal.show();
+    })
+    {% endif %}
+</script>
+{% endblock %}

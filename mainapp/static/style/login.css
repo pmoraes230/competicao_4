@@ -1,0 +1,24 @@
+body {
+    background-color: var(--roxo);
+}
+
+.img_login {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.container_login {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container_input {
+    margin-left: 20rem;
+}
+
+.pd-medio {
+    padding: 7px 24px;
+}

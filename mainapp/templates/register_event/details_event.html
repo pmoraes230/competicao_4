@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% block header %}
+{% include "partials/header/header.html" %}
+{% endblock %}
+
+<main class="container">
+    {% if messages %}
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5 color_laranja" id="messageModalLabel">Mensagem</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-unstyle">
+                        {% for message in messages %}
+                        <li class="{{ message.tags }} color_laranja text-center">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn button_rosa color_cinza" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="row mt-5">
+        <div class="col-md-3 col-sm-12 image_event mb-4">
+            {% if event.imagem %}
+                <img src="{{ event.imagem.url }}" alt="{{ event.nome }}" class="img-fluid rounded shadow">
+            {% endif %}
+        </div>
+
+        <div class="col-md-6 col-sm-12">
+            <div class="details_event">
+                <h1 class="color_laranja mb-4">{{ event.nome }}</h1>
+                <div class="container_info">
+                    <div class="content_info">
+                        <div class="card_info">
+                            <img src="{% static 'icons/CalendarWeek.svg' %}" alt="icone" class="icon_img">
+                            <p class="color_laranja mb-0">{{ event.dia|date:"d/m/Y" }} - {{ event.horario|time:"H:i" }}</p>
+                        </div>
+                        <div class="card_info">
+                            <img src="{% static 'icons/CashStack.svg' %}" alt="icone" class="icon_img">
+                            {% if event.preco == 0 %}
+                            <p class="color_laranja mb-0">Gratuito</p>
+                            {% else %}
+                            <p class="color_laranja mb-0">{{ event.preco }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="content_info mt-4">
+                        <div class="card_info">
+                            <img src="{% static 'icons/PinMapFill.svg' %}" alt="icone" class="icon_img">
+                            <p class="color_laranja mb-0">Senac Music Hall</p>
+                        </div>
+                        <div class="card_info">
+                            <img src="{% static 'icons/PersonFill.svg' %}" alt="icone" class="icon_img">
+                            <p class="color_laranja mb-0">{{ event.cpt_evento }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="content_info mt-4 w-100">
+                    <h3 class="color_laranja text-center">{{ event.descricao }}</h3>
+                </div>
+            </div>
+
+            {% if not cliente %}
+                <form action="{% url "details_event" event.id %}" method="post" class="mt-4">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="pesquisa_cliente" class="form-label color_laranja">Pesquisar Cliente</label>
+                        <input type="text" name="pesquisa_cliente" id="pesquisa_cliente" class="form-control color_laranja" placeholder="Digite o nome do cliente" value="{{ pesquisa_cliente|default_if_none:"" }}">
+                    </div>
+                    <button type="submit" name="search_client" class="btn button_verde color_cinza">Buscar cliente</button>
+                    <a href="{% url "update_event" event.id %}" class="btn button_roxo color_cinza">Atualizar evento</a>
+                    <a href="#" class="btn button_rosa color_cinza">Cadastrar cliente</a>
+                </form>
+
+                {% if clientes_encontrados %}
+                    <h3 class="color_laranja mt-4">Clientes encontrados</h3>
+                    <ul class="list-group mt-4">
+                        {% for cliente in clientes_encontrados %}
+                            <li class="list-group-item">
+                                {{ cliente.nome }}
+                                <form action="{% url "details_event" event.id %}" method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="client_id" value="{{ cliente.id }}">
+                                    <button type="submit" name="select_client" class="btn button_rosa color_cinza">
+                                        Selecionar
+                                    </button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% else %}
+                <form action="{% url "buy_ticket" event.id %}" method="post" class="mt-4">
+                    {% csrf_token %}
+                    <input type="hidden" name="cliente_id" value="{{ cliente.id }}">
+                    <div class="mb-3">
+                        <label for="setor" class="form-label color_laranja">Selecionar um setor</label>
+                        <select name="setor" id="setor" class="form-select color_laranja">
+                            <option value="" disabled>Escolha um setor</option>
+                            {% for setor in setors %}
+                                {% if setor.qtd_setor > 0 %}
+                                    <option value="{{ setor.id }}">{{ setor.nome }} ({{ setor.qtd_setor }} ingressos disponiveis)</option>
+                                {% else %}
+                                    <option value="" disabled>Sem ingressos disponíveis para {{ setor.nome }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="form-label color_laranja">Quantidade de ingressos</label>
+                        <input type="number" name="amount" id="amount" class="form-control" min="1" max="10" required>
+                    </div>
+                    <button type="submit" name="buy_ticket" class="btn button_rosa color_cinza mb-4">Comprar</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock %}
+{% block footer %}
+{% include "partials/footer/footer.html" %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    {% if messages %}
+    document.addEventListener("DOMContentLoaded", function () {
+        let messageModal = new bootstrap.Modal(document.getElementById("messageModal"), {
+            keyboard: true
+        })
+        messageModal.show()
+    })
+    {% endif %}
+</script>
+{% endblock %}

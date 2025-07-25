@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% block header %}
+{% include "partials/header/header.html" %}
+{% endblock %}
+
+<main class="container">
+    {% if messages %}
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="messageModalLabel">Messagem</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-unstyle">
+                        {% for message in messages %}
+                        <li class="{{ message.tags }} color_laranja text-center">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn button_rosa color_cinza" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <h1 class="text-center mt-3 color_laranja">Registro de setor</h1>
+    <form method="post" class="container_form">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="name" class="form-label color_laranja">Nome do Setor</label>
+            <input type="text" class="form-control color_laranja" id="name" name="name">
+        </div>
+        <div class="mb-3">
+            <label for="limit_ticket" class="form-label color_laranja">Limite de ingressos</label>
+            <input type="number" class="form-control color_laranja" id="limit_ticket" name="limit_ticket">
+        </div>
+        <div class="mb-3">
+            <label for="event" class="form-label color_laranja">Evento Ligado</label>
+            <select name="event" id="event" class="form-select color_laranja">
+                <option value="" disabled selected>Selecione um evento</option>
+                {% for event in events %}
+                <option value="{{ event.id }}">{{ event.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn button_rosa color_cinza">Registrar</button>
+        </div>
+    </form>
+</main>
+
+{% endblock %}
+{% block footer %}
+{% include "partials/footer/footer.html" %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    {% if messages %}
+    document.addEventListener("DOMContentLoaded", function () {
+        let messageModal = new bootstrap.Modal(document.getElementById("messageModal"), {
+            keyboard: true
+        });
+        messageModal.show();
+    })
+    {% endif %}
+</script>
+{% endblock %}
